@@ -80,6 +80,36 @@ def solve_sudoku(grid)
   end
 
   def sudoku_solved?(grid)
+    for row in 0..8
+      if !valid_group?(grid[row])
+        return 0
+      end
+    end
+  
+    for col in 0..8
+      if !valid_group?(grid.map { |row| row[col] })
+        return 0
+      end
+    end
+  
+    for box_row in 0..2
+      for box_col in 0..2
+        box = []
+        for row in 0..2
+          for col in 0..2
+            box << grid[box_row * 3 + row][box_col * 3 + col]
+          end
+        end
+        if !valid_group?(box)
+          return 0
+        end
+      end
+    end
+  
     return 1
+  end
+  
+  def valid_group?(group)
+    return group.sort == (1..9).to_a
   end
 end
